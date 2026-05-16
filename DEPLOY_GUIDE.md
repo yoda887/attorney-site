@@ -135,3 +135,97 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d вашдомен.com
 ```
 Certbot сам налаштує HTTPS і перенаправлення!
+
+## 7. Автоматизація розгортання (CI/CD через GitHub Actions)
+
+Щоб зміни автоматично потрапляли на сервер Hetzner після команди `git push`, найкраще налаштувати GitHub Actions.
+
+### Крок 1. Створіть скрипт для розгортання на сервері
+Підключіться до сервера Hetzner і створіть файл `deploy.sh` у папці вашого проєкту (наприклад, `/var/www/attorney-site`):
+```bash
+cd /var/www/attorney-site
+nano deploy.sh
+```
+Вставте наступний код:
+```bash
+#!/bin/bash
+# Переходимо в директорію проєкту
+cd /var/www/attorney-site
+
+# Отримуємо останні зміни з GitHub
+git pull origin main # або master, залежно від гілки
+
+# Оновлюємо бекенд
+cd backend
+npm install
+npx prisma generate
+npx prisma db push
+npm run build
+cd ..
+
+# Оновлюємо фронтенд
+cd frontend
+npm install
+npm run build
+cd ..
+
+# Перезапускаємо процеси PM2
+pm2 reload ecosystem.config.cjs
+```
+Зробіть скрипт виконуваним:
+```bash
+chmod +x deploy.sh
+```
+
+### Крок 2. Налаштування SSH ключів для GitHub
+Щоб GitHub міг безпечно підключатися до вашого сервера, потрібно створити для нього SSH ключ. На вашому сервері Hetzner виконайте:
+```bash
+ssh-keygen -t ed25519 -C "github-actions" -f ~/.ssh/github_actions
+# Натискайте Enter на всі запитання, НЕ вводьте пароль (passphrase)
+```
+1. Додайте створений публічний ключ до списку дозволених на сервері:
+   ```bash
+   cat ~/.ssh/github_actions.pub >> ~/.ssh/authorized_keys
+   ```
+2. Виведіть приватний ключ і скопіюйте його ВЕСЬ (починаючи з `-----BEGIN...`):
+   ```bash
+   cat ~/.ssh/github_actions
+   ```
+
+### Крок 3. Додавання Secrets у GitHub
+1. Зайдіть у ваш репозиторій на GitHub на сайті.
+2. Перейдіть у **Settings** -> **Secrets and variables** -> **Actions**.
+3. Натисніть **New repository secret** і додайте три змінні:
+   * `SERVER_IP` — IP-адреса вашого сервера Hetzner.
+   * `SERVER_USERNAME` — ваш логін на сервері (наприклад, `root` або `ubuntu`).
+   * `SSH_PRIVATE_KEY` — вставте сюди скопійований ПРИВАТНИЙ ключ.
+
+### Крок 4. Створення конфігурації GitHub Actions
+На вашому **локальному комп'ютері** у корені проєкту створіть папку `.github`, у ній папку `workflows`, а всередині файл `deploy.yml`. 
+Шлях має бути таким: `attorney-site/.github/workflows/deploy.yml`
+
+Додайте в файл такий код:
+```yaml
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches:
+      - main # Якщо ваша головна гілка називається master, змініть тут
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            /var/www/attorney-site/deploy.sh
+```
+
+**Все готово!** 
+Тепер, коли ви збережете цей файл, зробите `git add .`, `git commit` та `git push origin main` з вашого локального комп'ютера, GitHub автоматично зайде на ваш сервер Hetzner і виконає скрипт `deploy.sh`. Ви зможете бачити статус розгортання на вкладці **Actions** у вашому репозиторії GitHub.
