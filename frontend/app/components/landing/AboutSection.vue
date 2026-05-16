@@ -2,13 +2,13 @@
   <section class="section about-section" id="about">
     <div class="container">
       <div class="about-grid">
-        <div class="about-image">
+        <div class="about-image reveal">
           <div class="about-image-placeholder">
             <span class="about-avatar">⚖️</span>
             <p>{{ t('about.name') }}</p>
           </div>
         </div>
-        <div class="about-content">
+        <div class="about-content reveal delay-2">
           <h2 class="section-title">{{ t('about.title') }}</h2>
           <h3 class="about-name">{{ t('about.name') }}</h3>
           <p class="about-desc">{{ t('about.description') }}</p>
@@ -36,6 +36,10 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+
+onMounted(() => {
+  useReveal();
+});
 </script>
 
 <style scoped>

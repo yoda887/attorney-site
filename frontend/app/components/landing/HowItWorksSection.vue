@@ -6,19 +6,19 @@
         <p class="section-subtitle" style="margin: 0 auto">Отримайте професійну допомогу за три прості кроки</p>
       </div>
       <div class="steps-grid">
-        <div class="step-card">
+        <div class="step-card reveal delay-1">
           <div class="step-number">1</div>
           <h3 class="step-title">Оберіть час</h3>
           <p class="step-desc">Виберіть зручну для вас дату та вільний час у нашому онлайн-календарі.</p>
         </div>
-        <div class="step-line"></div>
-        <div class="step-card">
+        <div class="step-line reveal delay-2"></div>
+        <div class="step-card reveal delay-3">
           <div class="step-number">2</div>
           <h3 class="step-title">Заповніть форму</h3>
           <p class="step-desc">Вкажіть свої контактні дані та коротко опишіть суть вашої проблеми.</p>
         </div>
-        <div class="step-line"></div>
-        <div class="step-card">
+        <div class="step-line reveal delay-4"></div>
+        <div class="step-card reveal delay-5">
           <div class="step-number">3</div>
           <h3 class="step-title">Очікуйте дзвінка</h3>
           <p class="step-desc">Ми зв'яжемося з вами для підтвердження зустрічі та уточнення деталей.</p>
@@ -30,6 +30,10 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+
+onMounted(() => {
+  useReveal();
+});
 </script>
 
 <style scoped>

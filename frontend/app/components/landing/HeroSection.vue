@@ -54,8 +54,7 @@ const { t } = useI18n();
 .hero-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(201, 169, 78, 0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 30%, rgba(74, 158, 255, 0.05) 0%, transparent 50%),
+  background: radial-gradient(ellipse at 50% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
               linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
 }
 
@@ -72,6 +71,11 @@ const { t } = useI18n();
   position: relative;
   z-index: 1;
   padding-top: calc(var(--header-height) + var(--space-12));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
 }
 
 .hero-badge {
@@ -102,21 +106,23 @@ const { t } = useI18n();
 .hero-subtitle {
   font-size: var(--text-xl);
   color: var(--color-text-secondary);
-  max-width: 560px;
+  max-width: 600px;
   line-height: 1.7;
-  margin-bottom: var(--space-8);
+  margin: 0 auto var(--space-8);
 }
 
 .hero-buttons {
   display: flex;
   gap: var(--space-4);
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero-stats {
   display: flex;
-  gap: var(--space-8);
+  gap: var(--space-12);
   margin-top: var(--space-16);
+  justify-content: center;
 }
 
 .stat-card {
