@@ -15,8 +15,8 @@ module.exports = {
     {
       name: 'lawyer-nuxt',
       script: './frontend/.output/server/index.mjs',
-      instances: 'max', // or 1, if low resources
-      exec_mode: 'cluster',
+      instances: 1, // or 1, if low resources
+      exec_mode: 'fork',
       autorestart: true,
       watch: false,
       max_memory_restart: '500M',
