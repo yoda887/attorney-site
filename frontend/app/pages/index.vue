@@ -22,7 +22,7 @@ useHead({
         "@type": "LegalService",
         "name": "Адвокат Меркович Богдан Валерійович",
         "image": "https://merkovich.law/images/avatar.jpg",
-        "description": "Професійна юридична допомога: кримінальне, цивільне, сімейне право, бізнес-спори.",
+        "description": "Професійна юридична допомога: кримінальне, цивільне право, бізнес-спори.",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "вул. Юридична, 1",
