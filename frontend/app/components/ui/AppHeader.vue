@@ -83,12 +83,14 @@ if (import.meta.client) {
   height: var(--header-height);
   transition: all var(--transition-base);
   background: transparent;
+  border-bottom: 1px solid transparent;
 }
 
 .header.scrolled {
-  background: rgba(10, 22, 40, 0.9);
+  background: rgba(10, 10, 12, 0.9);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--color-border);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--color-border);
 }
 
 .header-inner {
@@ -187,8 +189,9 @@ if (import.meta.client) {
   top: var(--header-height);
   left: 0;
   right: 0;
-  background: rgba(10, 22, 40, 0.95);
+  background: rgba(10, 10, 12, 0.98);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: var(--space-4);
   border-bottom: 1px solid var(--color-border);
   display: flex;
