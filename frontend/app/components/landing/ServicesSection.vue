@@ -39,9 +39,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-onMounted(() => {
-  useReveal();
-});
+useReveal();
 
 const selectedService = ref<any>(null);
 

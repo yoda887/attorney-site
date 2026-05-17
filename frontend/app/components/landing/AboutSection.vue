@@ -37,9 +37,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-onMounted(() => {
-  useReveal();
-});
+useReveal();
 </script>
 
 <style scoped>
