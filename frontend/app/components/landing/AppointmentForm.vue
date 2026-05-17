@@ -1,17 +1,44 @@
 <template>
   <section class="section" id="appointment">
     <div class="container">
-      <div class="text-center" style="margin-bottom: var(--space-12)">
+      <div class="text-center reveal" style="margin-bottom: var(--space-12)">
         <h2 class="section-title">{{ t('appointment.title') }}</h2>
         <p class="section-subtitle" style="margin: 0 auto">{{ t('appointment.subtitle') }}</p>
       </div>
-      <div class="appointment-wrapper">
+      <div class="appointment-wrapper reveal delay-2">
         <div class="glass-card appointment-form-card">
           <form @submit.prevent="submitAppointment">
-            <!-- Date Picker -->
+            <!-- Custom Calendar -->
             <div class="form-group">
               <label class="form-label">{{ t('appointment.date') }}</label>
-              <input type="date" v-model="form.date" class="form-input" :min="minDate" @change="loadSlots" required />
+              <div class="calendar">
+                <div class="calendar-header">
+                  <button type="button" class="calendar-nav" @click="prevMonth">‹</button>
+                  <span class="calendar-month">{{ currentMonthName }} {{ currentYear }}</span>
+                  <button type="button" class="calendar-nav" @click="nextMonth">›</button>
+                </div>
+                <div class="calendar-weekdays">
+                  <span v-for="day in weekDays" :key="day">{{ day }}</span>
+                </div>
+                <div class="calendar-grid">
+                  <button
+                    v-for="(cell, i) in calendarCells"
+                    :key="i"
+                    type="button"
+                    class="calendar-day"
+                    :class="{
+                      'other-month': !cell.currentMonth,
+                      'today': cell.isToday,
+                      'selected': cell.dateStr === form.date,
+                      'disabled': cell.isPast || !cell.currentMonth,
+                    }"
+                    :disabled="cell.isPast || !cell.currentMonth"
+                    @click="selectDate(cell)"
+                  >
+                    {{ cell.day }}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Time Slots -->
@@ -84,6 +111,8 @@ const { t } = useI18n();
 const { isAuthenticated, accessToken } = useAuth();
 const toast = useToast();
 
+useReveal();
+
 const services = [
   { icon: '🔒', titleKey: 'services.criminal', descKey: 'services.criminal.desc' },
   { icon: '📋', titleKey: 'services.civil', descKey: 'services.civil.desc' },
@@ -94,7 +123,7 @@ const services = [
 ];
 
 const today = new Date();
-const minDate = today.toISOString().split('T')[0];
+today.setHours(0, 0, 0, 0);
 
 const form = reactive({
   date: '',
@@ -110,6 +139,98 @@ const slots = ref<{ time: string; available: boolean }[]>([]);
 const slotsLoading = ref(false);
 const slotsMessage = ref('');
 const submitting = ref(false);
+
+// Calendar state
+const viewDate = ref(new Date());
+const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+
+const monthNames = [
+  'Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
+  'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень',
+];
+
+const currentYear = computed(() => viewDate.value.getFullYear());
+const currentMonthName = computed(() => monthNames[viewDate.value.getMonth()]);
+
+const prevMonth = () => {
+  const d = new Date(viewDate.value);
+  d.setMonth(d.getMonth() - 1);
+  viewDate.value = d;
+};
+
+const nextMonth = () => {
+  const d = new Date(viewDate.value);
+  d.setMonth(d.getMonth() + 1);
+  viewDate.value = d;
+};
+
+interface CalendarCell {
+  day: number;
+  dateStr: string;
+  currentMonth: boolean;
+  isToday: boolean;
+  isPast: boolean;
+}
+
+const calendarCells = computed((): CalendarCell[] => {
+  const year = viewDate.value.getFullYear();
+  const month = viewDate.value.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+
+  // Monday = 0, Sunday = 6
+  let startWeekday = firstDay.getDay() - 1;
+  if (startWeekday < 0) startWeekday = 6;
+
+  const cells: CalendarCell[] = [];
+
+  // Previous month fill
+  const prevLastDay = new Date(year, month, 0);
+  for (let i = startWeekday - 1; i >= 0; i--) {
+    const d = prevLastDay.getDate() - i;
+    cells.push({
+      day: d,
+      dateStr: '',
+      currentMonth: false,
+      isToday: false,
+      isPast: true,
+    });
+  }
+
+  // Current month
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const date = new Date(year, month, d);
+    date.setHours(0, 0, 0, 0);
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    cells.push({
+      day: d,
+      dateStr,
+      currentMonth: true,
+      isToday: date.getTime() === today.getTime(),
+      isPast: date < today,
+    });
+  }
+
+  // Next month fill
+  const remaining = 42 - cells.length;
+  for (let d = 1; d <= remaining; d++) {
+    cells.push({
+      day: d,
+      dateStr: '',
+      currentMonth: false,
+      isToday: false,
+      isPast: false,
+    });
+  }
+
+  return cells;
+});
+
+const selectDate = (cell: CalendarCell) => {
+  if (cell.isPast || !cell.currentMonth) return;
+  form.date = cell.dateStr;
+  loadSlots();
+};
 
 const loadSlots = async () => {
   if (!form.date) return;
@@ -186,6 +307,114 @@ const submitAppointment = async () => {
 
 .appointment-form-card {
   padding: var(--space-10);
+}
+
+/* Custom Calendar */
+.calendar {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.calendar-month {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.calendar-nav {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calendar-nav:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+
+.calendar-weekdays span {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-2) 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calendar-day:hover:not(.disabled):not(.other-month) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.calendar-day.other-month {
+  color: var(--color-text-muted);
+  opacity: 0.3;
+  cursor: default;
+}
+
+.calendar-day.disabled {
+  color: var(--color-text-muted);
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.calendar-day.today {
+  border-color: var(--color-border-accent);
+  color: var(--color-accent);
+}
+
+.calendar-day.selected {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
+  font-weight: 600;
 }
 
 .time-slots {

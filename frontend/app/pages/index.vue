@@ -13,7 +13,6 @@
     <TestimonialsSection />
     <SectionDivider />
     <ContactSection />
-    <CtaBanner />
     <BackToTop />
   </div>
 </template>

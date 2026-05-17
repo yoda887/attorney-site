@@ -3,10 +3,6 @@
     <div class="hero-bg">
       <div class="hero-gradient"></div>
       <div class="hero-pattern"></div>
-      <!-- Floating ambient shapes -->
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-orb hero-orb-3"></div>
     </div>
     <div class="container hero-content">
       <div class="hero-text animate-fade-in-up">
@@ -113,48 +109,7 @@ onMounted(() => {
   background-size: 60px 60px;
 }
 
-/* Floating ambient orbs */
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  animation: float 20s ease-in-out infinite;
-}
 
-.hero-orb-1 {
-  width: 400px;
-  height: 400px;
-  background: rgba(212, 175, 55, 0.08);
-  top: 10%;
-  left: 15%;
-  animation-delay: 0s;
-}
-
-.hero-orb-2 {
-  width: 300px;
-  height: 300px;
-  background: rgba(212, 175, 55, 0.06);
-  bottom: 20%;
-  right: 10%;
-  animation-delay: -7s;
-}
-
-.hero-orb-3 {
-  width: 200px;
-  height: 200px;
-  background: rgba(212, 175, 55, 0.05);
-  top: 50%;
-  left: 60%;
-  animation-delay: -14s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -40px) scale(1.05); }
-  50% { transform: translate(-20px, 20px) scale(0.95); }
-  75% { transform: translate(15px, 30px) scale(1.02); }
-}
 
 .hero-content {
   position: relative;
