@@ -3,6 +3,10 @@
     <div class="hero-bg">
       <div class="hero-gradient"></div>
       <div class="hero-pattern"></div>
+      <!-- Floating ambient shapes -->
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
     </div>
     <div class="container hero-content">
       <div class="hero-text animate-fade-in-up">
@@ -15,16 +19,18 @@
         </div>
       </div>
       <div class="hero-stats animate-fade-in-up delay-3">
-        <div class="stat-card">
-          <span class="stat-number">15+</span>
+        <div class="stat-card" ref="statsRef">
+          <span class="stat-number">{{ animatedYears }}+</span>
           <span class="stat-label">{{ t('hero.experience') }}</span>
         </div>
+        <div class="stat-divider"></div>
         <div class="stat-card">
-          <span class="stat-number">500+</span>
+          <span class="stat-number">{{ animatedCases }}+</span>
           <span class="stat-label">{{ t('hero.cases') }}</span>
         </div>
+        <div class="stat-divider"></div>
         <div class="stat-card">
-          <span class="stat-number">1000+</span>
+          <span class="stat-number">{{ animatedClients }}+</span>
           <span class="stat-label">{{ t('hero.clients') }}</span>
         </div>
       </div>
@@ -34,6 +40,46 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+
+const animatedYears = ref(0);
+const animatedCases = ref(0);
+const animatedClients = ref(0);
+const statsRef = ref<HTMLElement | null>(null);
+const hasAnimated = ref(false);
+
+const animateCounter = (target: number, ref: ReturnType<typeof import('vue')['ref']>, duration: number = 2000) => {
+  const start = performance.now();
+  const step = (now: number) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+    ref.value = Math.floor(eased * target);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  };
+  requestAnimationFrame(step);
+};
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !hasAnimated.value) {
+          hasAnimated.value = true;
+          animateCounter(15, animatedYears, 1500);
+          animateCounter(500, animatedCases, 2000);
+          animateCounter(1000, animatedClients, 2500);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  if (statsRef.value) {
+    observer.observe(statsRef.value);
+  }
+});
 </script>
 
 <style scoped>
@@ -62,9 +108,52 @@ const { t } = useI18n();
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 25% 25%, rgba(201, 169, 78, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 75% 75%, rgba(201, 169, 78, 0.03) 1px, transparent 1px);
+    radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
+}
+
+/* Floating ambient orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: float 20s ease-in-out infinite;
+}
+
+.hero-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(212, 175, 55, 0.08);
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.hero-orb-2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(212, 175, 55, 0.06);
+  bottom: 20%;
+  right: 10%;
+  animation-delay: -7s;
+}
+
+.hero-orb-3 {
+  width: 200px;
+  height: 200px;
+  background: rgba(212, 175, 55, 0.05);
+  top: 50%;
+  left: 60%;
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -40px) scale(1.05); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(15px, 30px) scale(1.02); }
 }
 
 .hero-content {
@@ -123,12 +212,14 @@ const { t } = useI18n();
   gap: var(--space-12);
   margin-top: var(--space-16);
   justify-content: center;
+  align-items: center;
 }
 
 .stat-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  align-items: center;
 }
 
 .stat-number {
@@ -143,10 +234,17 @@ const { t } = useI18n();
   color: var(--color-text-muted);
 }
 
+.stat-divider {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--color-border-accent), transparent);
+}
+
 @media (max-width: 768px) {
   .hero-title { font-size: var(--text-4xl); }
   .hero-subtitle { font-size: var(--text-lg); }
   .hero-stats { flex-direction: column; gap: var(--space-4); }
+  .stat-divider { width: 48px; height: 1px; background: linear-gradient(to right, transparent, var(--color-border-accent), transparent); }
 }
 
 @media (max-width: 480px) {

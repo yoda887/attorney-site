@@ -1,12 +1,20 @@
 <template>
   <div class="landing">
     <HeroSection />
+    <SectionDivider />
     <ServicesSection />
+    <SectionDivider />
     <AboutSection />
+    <SectionDivider />
     <HowItWorksSection />
+    <SectionDivider />
     <AppointmentForm />
+    <SectionDivider />
     <TestimonialsSection />
+    <SectionDivider />
     <ContactSection />
+    <CtaBanner />
+    <BackToTop />
   </div>
 </template>
 

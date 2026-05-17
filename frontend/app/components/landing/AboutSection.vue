@@ -3,9 +3,9 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-image reveal">
-          <div class="about-image-placeholder">
-            <span class="about-avatar">⚖️</span>
-            <p>{{ t('about.name') }}</p>
+          <div class="about-image-wrapper">
+            <img :src="photoUrl" :alt="t('about.name')" class="about-photo" />
+            <div class="about-image-border"></div>
           </div>
         </div>
         <div class="about-content reveal delay-2">
@@ -37,6 +37,8 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
+const photoUrl = '/images/attorney-photo.png';
+
 useReveal();
 </script>
 
@@ -52,25 +54,39 @@ useReveal();
   align-items: center;
 }
 
-.about-image-placeholder {
-  aspect-ratio: 3/4;
-  background: var(--color-bg-tertiary);
+.about-image-wrapper {
+  position: relative;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
+  overflow: hidden;
 }
 
-.about-avatar {
-  font-size: 5rem;
+.about-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
 }
 
-.about-image-placeholder p {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+.about-image-border {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  pointer-events: none;
+}
+
+.about-image-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(10, 10, 12, 0.6), transparent);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  pointer-events: none;
 }
 
 .about-name {
