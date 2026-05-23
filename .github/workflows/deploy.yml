@@ -1,9 +1,8 @@
-name: Deploy to Hetzner
+Name: Deploy to Hetzner
 
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Добавляет кнопку "Run workflow" в GitHub с выбором ветки
 
 jobs:
   deploy:
@@ -16,23 +15,24 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Abort the script if any command fails
             set -e
 
+            # Load NVM
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm use 20
 
+            # Navigate and pull latest code
             cd /var/www/attorney-site
-            
-            # Получаем изменения, переключаемся на выбранную ветку и подтягиваем её
-            git fetch origin
-            git checkout ${{ github.ref_name }}
-            git pull origin ${{ github.ref_name }}
+            git pull origin main
 
+            # Build Frontend
             cd frontend
             npm install
             npm run build
             cd ..
 
+            # Restart PM2 processes
             pm2 restart lawyer-nuxt
             pm2 restart lawyer-api
