@@ -1,17 +1,10 @@
 <template>
   <div class="landing">
     <HeroSection />
-    <SectionDivider />
-    <ServicesSection />
-    <SectionDivider />
-    <AboutSection />
-    <SectionDivider />
-    <HowItWorksSection />
-    <SectionDivider />
-    <AppointmentForm />
-    <SectionDivider />
-    <TestimonialsSection />
-    <SectionDivider />
+    <SocialProofSection />
+    <EmpathySection />
+    <LegalQuizSection />
+    <MultiStepForm />
     <ContactSection />
     <BackToTop />
   </div>
@@ -28,11 +21,11 @@ useHead({
         "@context": "https://schema.org",
         "@type": "LegalService",
         "name": "Адвокат Меркович Богдан Валерійович",
-        "image": "https://merkovich.law/images/avatar.jpg",
+        "image": "https://merkovich.law/images/attorney-photo.png",
         "description": "Професійна юридична допомога: кримінальне, цивільне, господарське право, бізнес-спори.",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "вул. Юридична, 1",
+          "streetAddress": "вул. Хрещатик, 1, офіс 305",
           "addressLocality": "Київ",
           "addressCountry": "UA"
         },

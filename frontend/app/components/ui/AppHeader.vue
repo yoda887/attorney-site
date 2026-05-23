@@ -1,14 +1,15 @@
 <template>
-  <header class="header" :class="{ scrolled: isScrolled }">
+  <header class="header" :class="{ scrolled: isScrolled }" role="banner">
     <div class="header-inner container">
-      <NuxtLink to="/" class="logo">
+      <NuxtLink to="/" class="logo" aria-label="Головна сторінка">
         <span class="logo-icon">⚖️</span>
         <span class="logo-text">Меркович <span class="logo-accent">Б.В.</span></span>
       </NuxtLink>
 
-      <nav class="nav-desktop" v-if="!isDashboard">
-        <a href="#services" class="nav-link">{{ t('nav.services') }}</a>
-        <a href="#about" class="nav-link">{{ t('nav.about') }}</a>
+      <nav class="nav-desktop" v-if="!isDashboard" aria-label="Основна навігація">
+        <a href="#empathy" class="nav-link">{{ t('nav.problems') }}</a>
+        <a href="#social-proof" class="nav-link">{{ t('nav.reviews') }}</a>
+        <a href="#quiz" class="nav-link">{{ t('nav.quiz') }}</a>
         <a href="#appointment" class="nav-link">{{ t('nav.appointment') }}</a>
         <a href="#contacts" class="nav-link">{{ t('nav.contacts') }}</a>
       </nav>
@@ -26,7 +27,7 @@
           <NuxtLink to="/login" class="btn btn-outline btn-sm">{{ t('nav.login') }}</NuxtLink>
         </template>
 
-        <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen" aria-label="Menu">
+        <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen" aria-label="Меню" :aria-expanded="mobileOpen">
           <span :class="{ open: mobileOpen }"></span>
         </button>
       </div>
@@ -34,10 +35,11 @@
 
     <!-- Mobile menu -->
     <Transition name="slide-down">
-      <div v-if="mobileOpen" class="mobile-menu">
+      <div v-if="mobileOpen" class="mobile-menu" role="navigation" aria-label="Мобільна навігація">
         <template v-if="!isDashboard">
-          <a href="#services" class="mobile-link" @click="mobileOpen = false">{{ t('nav.services') }}</a>
-          <a href="#about" class="mobile-link" @click="mobileOpen = false">{{ t('nav.about') }}</a>
+          <a href="#empathy" class="mobile-link" @click="mobileOpen = false">{{ t('nav.problems') }}</a>
+          <a href="#social-proof" class="mobile-link" @click="mobileOpen = false">{{ t('nav.reviews') }}</a>
+          <a href="#quiz" class="mobile-link" @click="mobileOpen = false">{{ t('nav.quiz') }}</a>
           <a href="#appointment" class="mobile-link" @click="mobileOpen = false">{{ t('nav.appointment') }}</a>
           <a href="#contacts" class="mobile-link" @click="mobileOpen = false">{{ t('nav.contacts') }}</a>
         </template>
@@ -87,10 +89,11 @@ if (import.meta.client) {
 }
 
 .header.scrolled {
-  background: rgba(10, 10, 12, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .header-inner {
@@ -105,7 +108,7 @@ if (import.meta.client) {
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: var(--color-navy);
   font-weight: 600;
   font-size: var(--text-lg);
 }
@@ -129,10 +132,26 @@ if (import.meta.client) {
   font-weight: 500;
   transition: color var(--transition-fast);
   text-decoration: none;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width var(--transition-base);
 }
 
 .nav-link:hover {
-  color: var(--color-accent);
+  color: var(--color-navy);
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 .header-actions {
@@ -150,6 +169,7 @@ if (import.meta.client) {
   font-weight: 700;
   letter-spacing: 0.05em;
   transition: all var(--transition-fast);
+  background: transparent;
 }
 
 .lang-toggle:hover {
@@ -162,6 +182,7 @@ if (import.meta.client) {
   width: 32px;
   height: 32px;
   position: relative;
+  background: transparent;
 }
 
 .mobile-menu-btn span,
@@ -170,7 +191,7 @@ if (import.meta.client) {
   display: block;
   width: 20px;
   height: 2px;
-  background: var(--color-text-primary);
+  background: var(--color-navy);
   transition: all var(--transition-fast);
   position: absolute;
   left: 6px;
@@ -189,7 +210,7 @@ if (import.meta.client) {
   top: var(--header-height);
   left: 0;
   right: 0;
-  background: rgba(10, 10, 12, 0.98);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: var(--space-4);
@@ -197,6 +218,7 @@ if (import.meta.client) {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  box-shadow: var(--shadow-md);
 }
 
 .mobile-link {
@@ -209,11 +231,14 @@ if (import.meta.client) {
   text-align: left;
   width: 100%;
   transition: all var(--transition-fast);
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .mobile-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-accent);
+  background: var(--color-bg-secondary);
+  color: var(--color-navy);
 }
 
 .slide-down-enter-active,

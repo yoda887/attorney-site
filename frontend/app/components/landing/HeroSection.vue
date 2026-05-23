@@ -1,33 +1,68 @@
 <template>
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <div class="hero-gradient"></div>
-      <div class="hero-pattern"></div>
-    </div>
+  <section class="hero" id="hero" role="region" aria-labelledby="hero-title">
     <div class="container hero-content">
       <div class="hero-text animate-fade-in-up">
-        <div class="hero-badge">⚖️ {{ t('about.name') }}</div>
-        <h1 class="hero-title">{{ t('hero.title') }}</h1>
+        <div class="hero-badge" role="status">
+          {{ t('hero.badge') }}
+        </div>
+        <h1 class="hero-title" id="hero-title">
+          {{ t('hero.title') }}<br>
+          <span class="hero-title-accent">{{ t('hero.title.accent') }}</span>
+        </h1>
         <p class="hero-subtitle">{{ t('hero.subtitle') }}</p>
+
+        <!-- Specializations bullets -->
+        <ul class="hero-specs" aria-label="Спеціалізації">
+          <li v-for="(spec, i) in specs" :key="i" class="hero-spec-item">
+            <svg class="spec-check" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="10" fill="currentColor" opacity="0.1"/>
+              <path d="M6 10l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ t(spec) }}
+          </li>
+        </ul>
+
         <div class="hero-buttons">
-          <a href="#appointment" class="btn btn-primary btn-lg">{{ t('hero.cta') }}</a>
-          <a href="#about" class="btn btn-outline btn-lg">{{ t('hero.cta2') }}</a>
+          <a href="#quiz" class="btn btn-primary btn-lg" id="hero-cta-primary">{{ t('hero.cta') }}</a>
+          <a href="#appointment" class="btn btn-outline btn-lg" id="hero-cta-secondary">{{ t('hero.cta2') }}</a>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="hero-trust-badges" aria-label="Довіра">
+          <span class="trust-badge">🏛️ {{ t('social.badge.naau') }}</span>
+          <span class="trust-badge">⭐ {{ t('social.badge.winrate') }}</span>
         </div>
       </div>
-      <div class="hero-stats animate-fade-in-up delay-3">
-        <div class="stat-card" ref="statsRef">
-          <span class="stat-number">{{ animatedYears }}+</span>
-          <span class="stat-label">{{ t('hero.experience') }}</span>
+
+      <div class="hero-photo animate-fade-in-up delay-2">
+        <div class="hero-photo-wrapper">
+          <img
+            :src="photoUrl"
+            :alt="t('about.name')"
+            class="hero-photo-img"
+            width="480"
+            height="600"
+            loading="eager"
+          />
+          <div class="hero-photo-overlay"></div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-card">
-          <span class="stat-number">{{ animatedCases }}+</span>
-          <span class="stat-label">{{ t('hero.cases') }}</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-card">
-          <span class="stat-number">{{ animatedClients }}+</span>
-          <span class="stat-label">{{ t('hero.clients') }}</span>
+
+        <!-- Stats on photo card -->
+        <div class="hero-stats-card" ref="statsRef">
+          <div class="stat-item">
+            <span class="stat-number">{{ animatedYears }}+</span>
+            <span class="stat-label">{{ t('hero.experience') }}</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">{{ animatedCases }}+</span>
+            <span class="stat-label">{{ t('hero.cases') }}</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">{{ animatedClients }}+</span>
+            <span class="stat-label">{{ t('hero.clients') }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -36,6 +71,17 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+
+const photoUrl = '/images/attorney-photo.png';
+
+const specs = [
+  'hero.spec1',
+  'hero.spec2',
+  'hero.spec3',
+  'hero.spec4',
+  'hero.spec5',
+  'hero.spec6',
+];
 
 const animatedYears = ref(0);
 const animatedCases = ref(0);
@@ -84,42 +130,30 @@ onMounted(() => {
   min-height: 100vh;
   display: flex;
   align-items: center;
+  background: var(--color-bg-primary);
   overflow: hidden;
 }
 
-.hero-bg {
+.hero::before {
+  content: '';
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  top: -50%;
+  right: -20%;
+  width: 70%;
+  height: 150%;
+  background: radial-gradient(ellipse, var(--color-bg-secondary) 0%, transparent 70%);
+  pointer-events: none;
 }
-
-.hero-gradient {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
-              linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
-}
-
-.hero-pattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-
 
 .hero-content {
   position: relative;
   z-index: 1;
   padding-top: calc(var(--header-height) + var(--space-12));
-  display: flex;
-  flex-direction: column;
+  padding-bottom: var(--space-12);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
   align-items: center;
-  text-align: center;
-  width: 100%;
 }
 
 .hero-badge {
@@ -127,11 +161,12 @@ onMounted(() => {
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  background: var(--color-accent-glow);
+  background: var(--color-accent-bg);
   border: 1px solid var(--color-border-accent);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
-  color: var(--color-accent);
+  font-weight: 500;
+  color: var(--color-accent-dark);
   margin-bottom: var(--space-6);
 }
 
@@ -141,68 +176,197 @@ onMounted(() => {
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: var(--space-6);
-  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-navy);
+}
+
+.hero-title-accent {
+  color: var(--color-accent);
 }
 
 .hero-subtitle {
   font-size: var(--text-xl);
   color: var(--color-text-secondary);
-  max-width: 600px;
+  max-width: 520px;
   line-height: 1.7;
-  margin: 0 auto var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+/* Specialization bullets */
+.hero-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2) var(--space-6);
+  margin-bottom: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+.hero-spec-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.spec-check {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-accent);
 }
 
 .hero-buttons {
   display: flex;
   gap: var(--space-4);
   flex-wrap: wrap;
-  justify-content: center;
+  margin-bottom: var(--space-6);
 }
 
-.hero-stats {
+.hero-trust-badges {
   display: flex;
-  gap: var(--space-12);
-  margin-top: var(--space-16);
-  justify-content: center;
-  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
-.stat-card {
+/* Photo */
+.hero-photo {
+  position: relative;
+}
+
+.hero-photo-wrapper {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.hero-photo-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+}
+
+.hero-photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(to top, rgba(27, 42, 74, 0.4), transparent);
+  pointer-events: none;
+}
+
+/* Stats card overlapping photo */
+.hero-stats-card {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-lg);
+  white-space: nowrap;
+}
+
+.stat-item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
   align-items: center;
+  gap: 2px;
 }
 
 .stat-number {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
+  font-size: var(--text-2xl);
   font-weight: 700;
   color: var(--color-accent);
 }
 
 .stat-label {
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .stat-divider {
   width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, transparent, var(--color-border-accent), transparent);
+  height: 36px;
+  background: var(--color-border);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-text {
+    order: 1;
+  }
+
+  .hero-photo {
+    order: 0;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .hero-specs {
+    justify-items: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-trust-badges {
+    justify-content: center;
+  }
+
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media (max-width: 768px) {
   .hero-title { font-size: var(--text-4xl); }
   .hero-subtitle { font-size: var(--text-lg); }
-  .hero-stats { flex-direction: column; gap: var(--space-4); }
-  .stat-divider { width: 48px; height: 1px; background: linear-gradient(to right, transparent, var(--color-border-accent), transparent); }
+  .hero-specs { grid-template-columns: 1fr; }
+
+  .hero-stats-card {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    margin-top: var(--space-4);
+    justify-content: center;
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
   .hero-title { font-size: var(--text-3xl); }
+
+  .hero-stats-card {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .stat-divider {
+    width: 48px;
+    height: 1px;
+  }
 }
 </style>

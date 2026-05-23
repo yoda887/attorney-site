@@ -1,11 +1,11 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo">
-            <span class="logo-icon">⚖️</span>
-            <span class="logo-text">Меркович <span class="text-accent">Б.В.</span></span>
+          <div class="footer-logo">
+            <span class="footer-logo-icon">⚖️</span>
+            <span class="footer-logo-text">Меркович <span class="footer-logo-accent">Б.В.</span></span>
           </div>
           <p class="footer-desc">{{ t('about.description').slice(0, 120) }}...</p>
           <div class="footer-socials">
@@ -21,11 +21,11 @@
           </div>
         </div>
         <div class="footer-links">
-          <h4>{{ t('nav.services') }}</h4>
-          <a href="#services">{{ t('services.criminal') }}</a>
-          <a href="#services">{{ t('services.civil') }}</a>
-          <a href="#services">{{ t('services.family') }}</a>
-          <a href="#services">{{ t('services.business') }}</a>
+          <h4>{{ t('nav.problems') }}</h4>
+          <a href="#empathy">{{ t('empathy.fear.title') }}</a>
+          <a href="#empathy">{{ t('empathy.stress.title') }}</a>
+          <a href="#empathy">{{ t('empathy.time.title') }}</a>
+          <a href="#quiz">{{ t('nav.quiz') }}</a>
         </div>
         <div class="footer-links">
           <h4>{{ t('contact.title') }}</h4>
@@ -46,99 +46,19 @@ const { t } = useI18n();
 </script>
 
 <style scoped>
-.footer {
-  background: var(--color-bg-secondary);
-  border-top: 1px solid var(--color-border);
-  padding: var(--space-16) 0 var(--space-8);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: var(--space-12);
-  margin-bottom: var(--space-12);
-}
-
-.footer-brand .logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: 600;
-  font-size: var(--text-lg);
-  margin-bottom: var(--space-4);
-}
-
-.logo-icon { font-size: var(--text-2xl); }
-
-.footer-desc {
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.7;
-  margin-bottom: var(--space-6);
-}
-
-.footer-socials {
-  display: flex;
-  gap: var(--space-3);
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  transition: all var(--transition-base);
-}
-
-.social-link:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  box-shadow: 0 0 15px var(--color-accent-glow);
-  transform: translateY(-2px);
-}
-
-.footer-links h4 {
-  color: var(--color-text-primary);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-4);
-}
-
-.footer-links a,
-.footer-links p {
-  display: block;
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-  margin-bottom: var(--space-2);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.footer-links a:hover {
-  color: var(--color-accent);
-}
-
-.footer-bottom {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-6);
-  text-align: center;
-}
-
-.footer-bottom p {
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-
-@media (max-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-  }
-}
+.footer { background: var(--color-navy); border-top: none; padding: var(--space-16) 0 var(--space-8); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-12); margin-bottom: var(--space-12); }
+.footer-logo { display: flex; align-items: center; gap: var(--space-2); font-weight: 600; font-size: var(--text-lg); margin-bottom: var(--space-4); color: var(--color-text-inverse); }
+.footer-logo-icon { font-size: var(--text-2xl); }
+.footer-logo-accent { color: var(--color-accent); }
+.footer-desc { color: var(--color-text-on-navy); font-size: var(--text-sm); line-height: 1.7; margin-bottom: var(--space-6); opacity: 0.8; }
+.footer-socials { display: flex; gap: var(--space-3); }
+.social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); transition: all var(--transition-base); }
+.social-link:hover { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
+.footer-links h4 { color: var(--color-text-inverse); font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-4); }
+.footer-links a, .footer-links p { display: block; color: rgba(255,255,255,0.6); font-size: var(--text-sm); margin-bottom: var(--space-2); text-decoration: none; transition: color var(--transition-fast); }
+.footer-links a:hover { color: var(--color-accent); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-6); text-align: center; }
+.footer-bottom p { color: rgba(255,255,255,0.5); font-size: var(--text-sm); }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: var(--space-8); } }
 </style>
