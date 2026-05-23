@@ -4,9 +4,8 @@ on:
   push:
     # Можно использовать '*' для всех веток, либо перечислить конкретные:
     branches: 
-      - main
-      - dev
-      - 'feature/*'
+      # - main
+      - 'redesign/radical-overhaul'
 
 jobs:
   deploy:
