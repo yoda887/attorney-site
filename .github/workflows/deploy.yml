@@ -2,7 +2,7 @@ name: Deploy to Hetzner
 
 on:
   push:
-    branches: [main]
+    branches: [redesign/radical-overhaul]
 
 jobs:
   deploy:
@@ -19,7 +19,9 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm use 20
             cd /var/www/attorney-site
-            git pull origin main
+            git fetch origin
+            git checkout redesign/radical-overhaul
+            git pull origin redesign/radical-overhaul
             cd frontend
             npm install
             npm run build
