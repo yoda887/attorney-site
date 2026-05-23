@@ -2,7 +2,11 @@ name: Deploy to Hetzner
 
 on:
   push:
-    branches: [main]
+    # Можно использовать '*' для всех веток, либо перечислить конкретные:
+    branches: 
+      - main
+      - dev
+      - 'feature/*'
 
 jobs:
   deploy:
@@ -10,10 +14,15 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          # Получаем имя ветки, которая триггернула экшен
+          BRANCH_NAME: ${{ github.ref_name }}
         with:
           host: 94.130.111.231
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Разрешаем проброс переменной BRANCH_NAME в SSH-сессию
+          envs: BRANCH_NAME
           script: |
             # Abort the script if any command fails
             set -e
@@ -23,9 +32,13 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm use 20
 
-            # Navigate and pull latest code
+            # Navigate to project
             cd /var/www/attorney-site
-            git pull origin main
+
+            # Fetch all branches and checkout the one that triggered the action
+            git fetch origin
+            git checkout $BRANCH_NAME
+            git pull origin $BRANCH_NAME
 
             # Build Frontend
             cd frontend
