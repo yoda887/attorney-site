@@ -218,7 +218,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2) var(--space-6);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-10);
   list-style: none;
   padding: 0;
 }
@@ -227,7 +227,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: 500;
   color: var(--color-text-secondary);
 }
@@ -248,7 +248,7 @@ onMounted(() => {
 
 .hero-guarantee {
   font-size: var(--text-sm);
-  color: var(--color-success);
+  color: var(--color-text-secondary);
   font-weight: 600;
   margin-bottom: var(--space-6);
 }
