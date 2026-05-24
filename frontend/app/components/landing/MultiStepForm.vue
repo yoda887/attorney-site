@@ -30,7 +30,7 @@
                 </div>
               </div>
               <!-- Step 2: Situation -->
-              <div v-else-if="step === 1" key="s2" class="msf-body">
+              <div v-else-if="step === 1 && !quizSelectedService" key="s2" class="msf-body">
                 <div class="form-group">
                   <label class="form-label" for="msf-service">{{ t('multistep.service') }}</label>
                   <select id="msf-service" v-model="form.service" class="form-input form-select">
@@ -70,7 +70,7 @@
             <div class="msf-nav">
               <button v-if="step > 0" type="button" class="btn btn-ghost" @click="step--">← {{ t('multistep.back') }}</button>
               <div v-else></div>
-              <button v-if="step < 2" type="button" class="btn btn-primary" :disabled="!canNext" @click="step++">{{ t('multistep.next') }} →</button>
+              <button v-if="step < stepLabels.length - 1" type="button" class="btn btn-primary" :disabled="!canNext" @click="step++">{{ t('multistep.next') }} →</button>
               <button v-else type="submit" class="btn btn-primary btn-lg" :disabled="submitting || !form.consent">
                 {{ submitting ? t('common.loading') : t('multistep.submit') }}
               </button>
@@ -86,18 +86,27 @@
 const { t } = useI18n();
 const { isAuthenticated, accessToken } = useAuth();
 const toast = useToast();
+const { quizSelectedService } = useLeadState();
 useReveal();
 const { trigger: triggerConfetti } = useConfetti();
 
 const step = ref(0);
 const submitting = ref(false);
-const stepLabels = ['multistep.step1', 'multistep.step2', 'multistep.step3'];
+const baseStepLabels = ['multistep.step1', 'multistep.step2', 'multistep.step3'];
+const stepLabels = computed(() => quizSelectedService.value ? ['multistep.step1', 'multistep.step3'] : baseStepLabels);
+
 const services = ['services.criminal','services.civil','services.family','services.business','services.realestate','services.consultation'];
 const callTimes = ['multistep.callTime.morning','multistep.callTime.afternoon','multistep.callTime.evening'];
 
 const form = reactive({
   name: '', phone: '', service: '', notes: '', callTime: 0 as number, consent: false,
 });
+
+watch(quizSelectedService, (newVal) => {
+  if (newVal) {
+    form.service = t(newVal);
+  }
+}, { immediate: true });
 
 const canNext = computed(() => {
   if (step.value === 0) return form.name.trim() !== '' && form.phone.trim() !== '';

@@ -38,11 +38,25 @@
             <button v-else class="btn btn-primary" :disabled="answers[currentStep]===null" @click="finishQuiz">{{ t('quiz.finish') }} ✓</button>
           </div>
         </div>
-        <div v-else class="quiz-result animate-fade-in-up">
+        <div v-else-if="!leadSubmitted" class="quiz-result animate-fade-in-up">
           <div class="qr-icon">🎯</div>
           <h3 class="qr-title">{{ t('quiz.result.title') }}</h3>
           <p class="qr-text">{{ t('quiz.result.text') }}</p>
-          <a href="#appointment" class="btn btn-primary btn-lg">{{ t('quiz.result.cta') }}</a>
+          <form @submit.prevent="submitQuizLead" class="quiz-lead-form">
+            <div class="form-group" style="margin-bottom: 0;">
+              <input v-model="quizForm.name" class="form-input" :placeholder="t('multistep.name') + ' *'" required autocomplete="name" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <input v-model="quizForm.phone" type="tel" class="form-input" placeholder="+380..." required autocomplete="tel" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg quiz-submit-btn" :disabled="submitting">
+              {{ submitting ? t('common.loading') : t('quiz.result.cta') }}
+            </button>
+          </form>
+        </div>
+        <div v-else class="quiz-result animate-fade-in-up">
+           <div class="qr-icon">✅</div>
+           <h3 class="qr-title">{{ t('multistep.success') }}</h3>
         </div>
       </div>
     </div>
@@ -53,6 +67,10 @@
 const { t } = useI18n();
 useReveal();
 const { trigger: triggerConfetti } = useConfetti();
+const { isAuthenticated, accessToken } = useAuth();
+const toast = useToast();
+const { quizSelectedService } = useLeadState();
+
 const questions = [
   { qKey: 'quiz.q1', opts: ['quiz.q1.a1','quiz.q1.a2','quiz.q1.a3','quiz.q1.a4','quiz.q1.a5'] },
   { qKey: 'quiz.q2', opts: ['quiz.q2.a1','quiz.q2.a2','quiz.q2.a3'] },
@@ -60,10 +78,61 @@ const questions = [
   { qKey: 'quiz.q4', opts: ['quiz.q4.a1','quiz.q4.a2','quiz.q4.a3','quiz.q4.a4'] },
   { qKey: 'quiz.q5', opts: ['quiz.q5.a1','quiz.q5.a2','quiz.q5.a3','quiz.q5.a4'] },
 ];
+
 const currentStep = ref(0);
 const answers = ref<(number|null)[]>(questions.map(() => null));
 const isCompleted = ref(false);
-const finishQuiz = () => { isCompleted.value = true; triggerConfetti(); };
+const leadSubmitted = ref(false);
+const submitting = ref(false);
+const quizForm = reactive({ name: '', phone: '' });
+
+// Map Q1 answers to service translation keys
+const serviceMap = [
+  'services.criminal',
+  'services.civil',
+  'services.family',
+  'services.business',
+  'services.realestate'
+];
+
+watch(() => answers.value[0], (newVal) => {
+  if (newVal !== null && newVal < serviceMap.length) {
+    quizSelectedService.value = serviceMap[newVal];
+  }
+});
+
+const finishQuiz = () => { isCompleted.value = true; };
+
+const submitQuizLead = async () => {
+  submitting.value = true;
+  try {
+    const url = isAuthenticated.value ? '/api/appointments' : '/api/appointments/guest';
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (isAuthenticated.value && accessToken.value) headers['Authorization'] = `Bearer ${accessToken.value}`;
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    
+    const notes = questions.map((q, i) => `${t(q.qKey)}: ${answers.value[i] !== null ? t(q.opts[answers.value[i] as number]) : '-'}`).join('\n');
+
+    const body: any = {
+      date: dateStr, 
+      timeSlot: '09:00',
+      service: quizSelectedService.value ? t(quizSelectedService.value) : 'Консультація (Квіз)', 
+      notes: "Лід з Квізу:\n" + notes,
+    };
+    if (!isAuthenticated.value) { body.guestName = quizForm.name; body.guestPhone = quizForm.phone; }
+    
+    await $fetch(url, { method: 'POST', headers, body });
+    
+    leadSubmitted.value = true;
+    triggerConfetti();
+  } catch (e: any) {
+    toast.error(e?.data?.error || t('common.error'));
+  } finally {
+    submitting.value = false;
+  }
+};
+
 const transitionName = ref('slide-left');
 const circumference = 2 * Math.PI * 45;
 const progressOffset = computed(() => circumference * (1 - (currentStep.value + 1) / questions.length));
@@ -101,4 +170,6 @@ const progressOffset = computed(() => circumference * (1 - (currentStep.value + 
 .qr-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; color: var(--color-text-inverse); margin-bottom: var(--space-4); }
 .qr-text { font-size: var(--text-lg); color: var(--color-text-on-navy); max-width: 480px; margin: 0 auto var(--space-8); line-height: 1.7; }
 @media (max-width: 768px) { .quiz-card { padding: var(--space-6); } .quiz-q-text { font-size: var(--text-xl); } .quiz-option { padding: var(--space-3) var(--space-4); font-size: var(--text-sm); } }
+.quiz-lead-form { max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-4); }
+.quiz-submit-btn { width: 100%; margin-top: var(--space-2); }
 </style>
