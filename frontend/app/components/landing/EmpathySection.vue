@@ -42,22 +42,6 @@
           </div>
         </div>
 
-        <!-- Row 3: Icon Left, Text Right -->
-        <div class="empathy-card reveal delay-3">
-          <div class="empathy-icon-wrapper">
-            <svg class="empathy-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-              <circle cx="24" cy="24" r="24" fill="currentColor" opacity="0.08"/>
-              <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M24 18v6l4 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M16 14l-2-2M32 14l2-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="empathy-text">
-            <h3>{{ t('empathy.time.title') }}</h3>
-            <p>{{ t('empathy.time.desc') }}</p>
-            <p class="empathy-loss">⚠️ {{ t('empathy.time.loss') }}</p>
-          </div>
-        </div>
 
         <!-- Row 4: Text Left, Icon Right -->
         <div class="empathy-card empathy-card--reversed reveal delay-4">

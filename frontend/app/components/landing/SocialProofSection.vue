@@ -6,12 +6,7 @@
         <p class="section-subtitle" style="margin: 0 auto">{{ t('social.subtitle') }}</p>
       </div>
 
-      <!-- Trust badges row -->
-      <div class="social-badges reveal delay-1" role="list" aria-label="Довірчі бейджі">
-        <span class="social-badge" role="listitem">🏛️ {{ t('social.badge.naau') }}</span>
-        <span class="social-badge" role="listitem">📅 {{ t('social.badge.experience') }}</span>
-        <span class="social-badge social-badge--accent" role="listitem">⭐ {{ t('social.badge.winrate') }}</span>
-      </div>
+
 
       <!-- Cases grid -->
       <div class="cases-grid">
@@ -216,7 +211,7 @@ const cases = [
 
 .social-cta {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: var(--space-12);
 }
 </style>

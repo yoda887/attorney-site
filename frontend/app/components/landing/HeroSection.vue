@@ -24,7 +24,6 @@
 
         <div class="hero-buttons">
           <a href="#quiz" class="btn btn-primary btn-lg" id="hero-cta-primary">{{ t('hero.cta') }}</a>
-          <a href="#appointment" class="btn btn-outline btn-lg" id="hero-cta-secondary">{{ t('hero.cta2') }}</a>
         </div>
         <p class="hero-guarantee">{{ t('hero.guarantee') }}</p>
 
@@ -127,9 +126,9 @@ onMounted(() => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !hasAnimated.value) {
           hasAnimated.value = true;
-          animateCounter(15, animatedYears, 1500);
-          animateCounter(500, animatedCases, 2000);
-          animateCounter(1000, animatedClients, 2500);
+          animateCounter(12, animatedYears, 1500);
+          animateCounter(157, animatedCases, 2000);
+          animateCounter(342, animatedClients, 2500);
         }
       });
     },

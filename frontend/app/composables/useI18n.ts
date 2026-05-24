@@ -4,7 +4,7 @@ const translations: Record<string, Record<string, string>> = {
     // Navigation (updated for new structure)
     'nav.home': 'Головна',
     'nav.problems': 'Проблеми',
-    'nav.reviews': 'Відгуки',
+    'nav.reviews': 'Кейси',
     'nav.quiz': 'Квіз',
     'nav.appointment': 'Запис',
     'nav.contacts': 'Контакти',
@@ -28,7 +28,7 @@ const translations: Record<string, Record<string, string>> = {
     'hero.spec3': 'Сімейне право',
     'hero.spec4': 'Господарське право',
     'hero.spec5': 'Нерухомість',
-    'hero.spec6': 'Консультації',
+    'hero.spec6': 'Військове право',
     'hero.guarantee': '✅ Безкоштовно • Без зобов\'язань • Відповідь за 5 хвилин',
 
     // Empathy Section — Client Pain Points
@@ -45,7 +45,7 @@ const translations: Record<string, Record<string, string>> = {
     'empathy.time.loss': 'Процесуальні строки не чекають. Пропущений дедлайн — це втрачене право на оскарження назавжди.',
     'empathy.trust.title': 'Довіра до адвоката',
     'empathy.trust.desc': 'Як обрати правильного? 15+ років досвіду та сотні вдячних клієнтів.',
-    'empathy.trust.loss': 'Неправильний вибір адвоката = програна справа. 73% клієнтів, що змінили адвоката, прийшли саме до нас.',
+    'empathy.trust.loss': 'Неправильний вибір адвоката = програна справа. Більшість клієнтів, що змінили захисника, приходять до нас виправляти чужі помилки.',
     'empathy.solution': 'Не ризикуйте — дійте зараз →',
 
     // Social Proof
@@ -68,7 +68,7 @@ const translations: Record<string, Record<string, string>> = {
     'social.case4.result': 'Повернення коштів та притягнення до відповідальності',
     'social.case4.author': '— Ірина Д.',
     'social.badge.naau': 'Член НААУ',
-    'social.badge.experience': '15+ років досвіду',
+    'social.badge.experience': '12 років досвіду',
     'social.badge.winrate': '98% позитивних рішень',
     'social.cta': 'Хочу такий самий результат →',
 
@@ -215,7 +215,7 @@ const translations: Record<string, Record<string, string>> = {
   en: {
     'nav.home': 'Home',
     'nav.problems': 'Problems',
-    'nav.reviews': 'Reviews',
+    'nav.reviews': 'Cases',
     'nav.quiz': 'Quiz',
     'nav.appointment': 'Book',
     'nav.contacts': 'Contacts',
@@ -238,7 +238,7 @@ const translations: Record<string, Record<string, string>> = {
     'hero.spec3': 'Family Law',
     'hero.spec4': 'Business Law',
     'hero.spec5': 'Real Estate',
-    'hero.spec6': 'Consultations',
+    'hero.spec6': 'Military Law',
     'hero.guarantee': '✅ Free • No obligations • Response in 5 minutes',
 
     'empathy.title': 'We understand what you\'re going through',
@@ -254,7 +254,7 @@ const translations: Record<string, Record<string, string>> = {
     'empathy.time.loss': 'Procedural deadlines don\'t wait. A missed deadline means losing your right to appeal — forever.',
     'empathy.trust.title': 'Trusting an attorney',
     'empathy.trust.desc': 'How to choose the right one? 15+ years of experience and hundreds of grateful clients.',
-    'empathy.trust.loss': 'Wrong attorney = lost case. 73% of clients who switched attorneys came to us.',
+    'empathy.trust.loss': 'Wrong attorney = lost case. Most clients who switch attorneys come to us to fix others\' mistakes.',
     'empathy.solution': 'Don\'t risk it — act now →',
 
     'social.title': 'Real Results',
@@ -276,7 +276,7 @@ const translations: Record<string, Record<string, string>> = {
     'social.case4.result': 'Funds returned and perpetrators held accountable',
     'social.case4.author': '— Iryna D.',
     'social.badge.naau': 'UNBA Member',
-    'social.badge.experience': '15+ years experience',
+    'social.badge.experience': '12 years experience',
     'social.badge.winrate': '98% positive outcomes',
     'social.cta': 'I want the same result →',
 

@@ -23,9 +23,7 @@
           <NuxtLink to="/dashboard" class="btn btn-ghost btn-sm">{{ t('nav.dashboard') }}</NuxtLink>
           <button @click="logout" class="btn btn-ghost btn-sm">{{ t('nav.logout') }}</button>
         </template>
-        <template v-else>
-          <NuxtLink to="/login" class="btn btn-outline btn-sm">{{ t('nav.login') }}</NuxtLink>
-        </template>
+
 
         <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen" aria-label="Меню" :aria-expanded="mobileOpen">
           <span :class="{ open: mobileOpen }"></span>
@@ -47,9 +45,7 @@
           <NuxtLink to="/dashboard" class="mobile-link" @click="mobileOpen = false">{{ t('nav.dashboard') }}</NuxtLink>
           <button class="mobile-link" @click="logout(); mobileOpen = false">{{ t('nav.logout') }}</button>
         </template>
-        <template v-else>
-          <NuxtLink to="/login" class="mobile-link" @click="mobileOpen = false">{{ t('nav.login') }}</NuxtLink>
-        </template>
+
       </div>
     </Transition>
   </header>
