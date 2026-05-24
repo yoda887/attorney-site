@@ -35,7 +35,7 @@
             <button v-if="currentStep > 0" class="btn btn-ghost" @click="transitionName='slide-right'; currentStep--">← {{ t('quiz.back') }}</button>
             <div v-else></div>
             <button v-if="currentStep < questions.length - 1" class="btn btn-primary" :disabled="answers[currentStep]===null" @click="transitionName='slide-left'; currentStep++">{{ t('quiz.next') }} →</button>
-            <button v-else class="btn btn-primary" :disabled="answers[currentStep]===null" @click="isCompleted=true">{{ t('quiz.finish') }} ✓</button>
+            <button v-else class="btn btn-primary" :disabled="answers[currentStep]===null" @click="finishQuiz">{{ t('quiz.finish') }} ✓</button>
           </div>
         </div>
         <div v-else class="quiz-result animate-fade-in-up">
@@ -52,6 +52,7 @@
 <script setup lang="ts">
 const { t } = useI18n();
 useReveal();
+const { trigger: triggerConfetti } = useConfetti();
 const questions = [
   { qKey: 'quiz.q1', opts: ['quiz.q1.a1','quiz.q1.a2','quiz.q1.a3','quiz.q1.a4','quiz.q1.a5'] },
   { qKey: 'quiz.q2', opts: ['quiz.q2.a1','quiz.q2.a2','quiz.q2.a3'] },
@@ -62,6 +63,7 @@ const questions = [
 const currentStep = ref(0);
 const answers = ref<(number|null)[]>(questions.map(() => null));
 const isCompleted = ref(false);
+const finishQuiz = () => { isCompleted.value = true; triggerConfetti(); };
 const transitionName = ref('slide-left');
 const circumference = 2 * Math.PI * 45;
 const progressOffset = computed(() => circumference * (1 - (currentStep.value + 1) / questions.length));
@@ -81,15 +83,15 @@ const progressOffset = computed(() => circumference * (1 - (currentStep.value + 
 .quiz-question { width: 100%; margin-bottom: var(--space-8); overflow: hidden; }
 .quiz-q-text { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; color: var(--color-navy); text-align: center; margin-bottom: var(--space-6); line-height: 1.3; }
 .quiz-options { display: flex; flex-direction: column; gap: var(--space-3); }
-.quiz-option { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-4) var(--space-5); border: 2px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: var(--text-base); font-weight: 500; text-align: left; cursor: pointer; transition: all var(--transition-fast); }
+.quiz-option { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-4) var(--space-5); border: 2px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: var(--text-base); font-weight: 500; text-align: left; cursor: pointer; transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast); }
 .quiz-option:hover { border-color: var(--color-accent); color: var(--color-navy); background: var(--color-accent-bg); }
 .quiz-option.selected { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-navy); font-weight: 600; }
-.opt-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--color-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all var(--transition-fast); }
+.opt-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--color-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color var(--transition-fast), background-color var(--transition-fast); }
 .quiz-option.selected .opt-radio { border-color: var(--color-accent); background: var(--color-accent); }
 .opt-dot { width: 8px; height: 8px; border-radius: 50%; background: transparent; transition: background var(--transition-fast); }
 .quiz-option.selected .opt-dot { background: white; }
 .quiz-nav { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active { transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1); }
 .slide-left-enter-from { opacity: 0; transform: translateX(40px); }
 .slide-left-leave-to { opacity: 0; transform: translateX(-40px); }
 .slide-right-enter-from { opacity: 0; transform: translateX(-40px); }

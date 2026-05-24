@@ -3,13 +3,13 @@
     <div class="container hero-content">
       <div class="hero-text animate-fade-in-up">
         <div class="hero-badge" role="status">
-          {{ t('hero.badge') }}
+          {{ dynamicBadge }}
         </div>
         <h1 class="hero-title" id="hero-title">
-          {{ t('hero.title') }}<br>
-          <span class="hero-title-accent">{{ t('hero.title.accent') }}</span>
+          {{ dynamicTitle }}<br>
+          <span class="hero-title-accent">{{ dynamicTitleAccent }}</span>
         </h1>
-        <p class="hero-subtitle">{{ t('hero.subtitle') }}</p>
+        <p class="hero-subtitle">{{ dynamicSubtitle }}</p>
 
         <!-- Specializations bullets -->
         <ul class="hero-specs" aria-label="Спеціалізації">
@@ -26,6 +26,7 @@
           <a href="#quiz" class="btn btn-primary btn-lg" id="hero-cta-primary">{{ t('hero.cta') }}</a>
           <a href="#appointment" class="btn btn-outline btn-lg" id="hero-cta-secondary">{{ t('hero.cta2') }}</a>
         </div>
+        <p class="hero-guarantee">{{ t('hero.guarantee') }}</p>
 
         <!-- Trust badges -->
         <div class="hero-trust-badges" aria-label="Довіра">
@@ -71,6 +72,23 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+const route = useRoute();
+
+const dynamicBadge = computed(() => {
+  return route.query.utm_badge ? String(route.query.utm_badge) : t('hero.badge');
+});
+
+const dynamicTitle = computed(() => {
+  return route.query.utm_title ? String(route.query.utm_title) : t('hero.title');
+});
+
+const dynamicTitleAccent = computed(() => {
+  return route.query.utm_title_accent ? String(route.query.utm_title_accent) : t('hero.title.accent');
+});
+
+const dynamicSubtitle = computed(() => {
+  return route.query.utm_subtitle ? String(route.query.utm_subtitle) : t('hero.subtitle');
+});
 
 const photoUrl = '/images/attorney-photo.png';
 
@@ -138,7 +156,7 @@ onMounted(() => {
   content: '';
   position: absolute;
   top: -50%;
-  right: -20%;
+  left: -20%;
   width: 70%;
   height: 150%;
   background: radial-gradient(ellipse, var(--color-bg-secondary) 0%, transparent 70%);
@@ -154,6 +172,11 @@ onMounted(() => {
   grid-template-columns: 1fr 1fr;
   gap: var(--space-12);
   align-items: center;
+}
+
+/* Gutenberg Diagram: photo in primary optical area (left), text+CTA in terminal area (right) */
+.hero-photo {
+  order: -1;
 }
 
 .hero-badge {
@@ -221,6 +244,13 @@ onMounted(() => {
   display: flex;
   gap: var(--space-4);
   flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.hero-guarantee {
+  font-size: var(--text-sm);
+  color: var(--color-success);
+  font-weight: 600;
   margin-bottom: var(--space-6);
 }
 

@@ -202,7 +202,7 @@ input, textarea, select {
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   box-shadow: var(--shadow-card);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .trust-card:hover {
@@ -217,7 +217,7 @@ input, textarea, select {
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   box-shadow: var(--shadow-card);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .glass-card:hover {
@@ -233,7 +233,7 @@ input, textarea, select {
   padding: var(--space-8);
   color: var(--color-text-inverse);
   box-shadow: var(--shadow-lg);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), background-color var(--transition-base);
 }
 
 .navy-card:hover {
@@ -251,7 +251,7 @@ input, textarea, select {
   border-radius: var(--radius-md);
   font-weight: 600;
   font-size: var(--text-base);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base), box-shadow var(--transition-base);
   white-space: nowrap;
   line-height: 1.5;
   cursor: pointer;
@@ -361,7 +361,7 @@ input, textarea, select {
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
 }
 
@@ -539,7 +539,7 @@ input, textarea, select {
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.is-visible {
   opacity: 1;

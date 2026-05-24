@@ -53,7 +53,7 @@ const { t } = useI18n();
 .footer-logo-accent { color: var(--color-accent); }
 .footer-desc { color: var(--color-text-on-navy); font-size: var(--text-sm); line-height: 1.7; margin-bottom: var(--space-6); opacity: 0.8; }
 .footer-socials { display: flex; gap: var(--space-3); }
-.social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); transition: all var(--transition-base); }
+.social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base); }
 .social-link:hover { border-color: var(--color-accent); color: var(--color-accent); transform: translateY(-2px); }
 .footer-links h4 { color: var(--color-text-inverse); font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-4); }
 .footer-links a, .footer-links p { display: block; color: rgba(255,255,255,0.6); font-size: var(--text-sm); margin-bottom: var(--space-2); text-decoration: none; transition: color var(--transition-fast); }

@@ -12,7 +12,7 @@
             <div class="msf-step-num">{{ step > i ? '✓' : i + 1 }}</div>
             <span class="msf-step-label">{{ t(s) }}</span>
           </div>
-          <div class="msf-step-line" :style="{ width: `${(step / (stepLabels.length - 1)) * 100}%` }"></div>
+          <div class="msf-step-line" :style="{ width: `${((step + 1) / stepLabels.length) * 100}%` }"></div>
         </div>
         <!-- Form card -->
         <div class="msf-card">
@@ -58,6 +58,9 @@
                   <span>{{ t('multistep.consent') }}</span>
                 </label>
                 <div class="msf-guarantees">
+                  <p>{{ t('multistep.guarantee.free') }}</p>
+                  <p>{{ t('multistep.guarantee.norisk') }}</p>
+                  <p>{{ t('multistep.guarantee.refund') }}</p>
                   <p>{{ t('multistep.privacy') }}</p>
                   <p>{{ t('multistep.response') }}</p>
                 </div>
@@ -84,6 +87,7 @@ const { t } = useI18n();
 const { isAuthenticated, accessToken } = useAuth();
 const toast = useToast();
 useReveal();
+const { trigger: triggerConfetti } = useConfetti();
 
 const step = ref(0);
 const submitting = ref(false);
@@ -116,6 +120,7 @@ const handleSubmit = async () => {
     if (!isAuthenticated.value) { body.guestName = form.name; body.guestPhone = form.phone; }
     await $fetch(url, { method: 'POST', headers, body });
     toast.success(t('multistep.success'));
+    triggerConfetti();
     form.name = ''; form.phone = ''; form.service = ''; form.notes = ''; form.callTime = 0; form.consent = false;
     step.value = 0;
   } catch (e: any) {
@@ -128,7 +133,7 @@ const handleSubmit = async () => {
 .msf-wrapper { max-width: 580px; margin: 0 auto; }
 .msf-steps { display: flex; justify-content: space-between; align-items: flex-start; position: relative; margin-bottom: var(--space-8); padding: 0 var(--space-4); }
 .msf-step { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); z-index: 1; }
-.msf-step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); background: var(--color-bg-secondary); color: var(--color-text-muted); border: 2px solid var(--color-border); transition: all var(--transition-base); }
+.msf-step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); background: var(--color-bg-secondary); color: var(--color-text-muted); border: 2px solid var(--color-border); transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base); }
 .msf-step.active .msf-step-num { background: var(--color-accent); color: white; border-color: var(--color-accent); }
 .msf-step.current .msf-step-num { box-shadow: 0 0 0 4px var(--color-accent-glow); }
 .msf-step-label { font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -139,14 +144,14 @@ const handleSubmit = async () => {
 .msf-body { min-height: 200px; }
 .msf-nav { display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--color-border-light); }
 .call-time-options { display: flex; flex-direction: column; gap: var(--space-2); }
-.call-time-btn { padding: var(--space-3) var(--space-4); border: 2px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: var(--text-sm); cursor: pointer; transition: all var(--transition-fast); text-align: left; }
+.call-time-btn { padding: var(--space-3) var(--space-4); border: 2px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: var(--text-sm); cursor: pointer; transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast); text-align: left; }
 .call-time-btn:hover { border-color: var(--color-accent); }
 .call-time-btn.selected { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-navy); font-weight: 600; }
 .consent-label { display: flex; align-items: flex-start; gap: var(--space-3); margin: var(--space-5) 0; font-size: var(--text-sm); color: var(--color-text-secondary); cursor: pointer; }
 .consent-checkbox { width: 18px; height: 18px; accent-color: var(--color-accent); flex-shrink: 0; margin-top: 2px; }
 .msf-guarantees { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); background: var(--color-bg-secondary); border-radius: var(--radius-md); }
 .msf-guarantees p { font-size: var(--text-sm); color: var(--color-text-secondary); }
-.msf-slide-enter-active, .msf-slide-leave-active { transition: all 0.3s ease; }
+.msf-slide-enter-active, .msf-slide-leave-active { transition: transform 0.3s ease, opacity 0.3s ease; }
 .msf-slide-enter-from { opacity: 0; transform: translateX(20px); }
 .msf-slide-leave-to { opacity: 0; transform: translateX(-20px); }
 @media (max-width: 768px) { .msf-card { padding: var(--space-5); } .msf-step-label { font-size: 0.65rem; } }

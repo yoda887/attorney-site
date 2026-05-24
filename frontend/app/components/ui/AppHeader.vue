@@ -83,7 +83,7 @@ if (import.meta.client) {
   right: 0;
   z-index: 100;
   height: var(--header-height);
-  transition: all var(--transition-base);
+  transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
   background: transparent;
   border-bottom: 1px solid transparent;
 }
@@ -168,7 +168,7 @@ if (import.meta.client) {
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast), color var(--transition-fast);
   background: transparent;
 }
 
@@ -192,7 +192,7 @@ if (import.meta.client) {
   width: 20px;
   height: 2px;
   background: var(--color-navy);
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
   position: absolute;
   left: 6px;
 }
@@ -230,7 +230,7 @@ if (import.meta.client) {
   text-decoration: none;
   text-align: left;
   width: 100%;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -243,7 +243,7 @@ if (import.meta.client) {
 
 .slide-down-enter-active,
 .slide-down-leave-active {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .slide-down-enter-from,

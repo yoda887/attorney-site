@@ -39,6 +39,11 @@
           </div>
         </article>
       </div>
+
+      <!-- Terminal CTA (Gutenberg terminal area) -->
+      <div class="social-cta reveal delay-5">
+        <a href="#quiz" class="btn btn-primary btn-lg" id="social-cta">{{ t('social.cta') }}</a>
+      </div>
     </div>
   </section>
 </template>
@@ -119,7 +124,7 @@ const cases = [
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   box-shadow: var(--shadow-card);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   display: flex;
   flex-direction: column;
 }
@@ -207,5 +212,11 @@ const cases = [
   .cases-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.social-cta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-12);
 }
 </style>

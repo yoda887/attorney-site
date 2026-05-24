@@ -21,6 +21,7 @@
           <div class="empathy-text">
             <h3>{{ t('empathy.fear.title') }}</h3>
             <p>{{ t('empathy.fear.desc') }}</p>
+            <p class="empathy-loss">⚠️ {{ t('empathy.fear.loss') }}</p>
           </div>
         </div>
 
@@ -37,6 +38,7 @@
           <div class="empathy-text">
             <h3>{{ t('empathy.stress.title') }}</h3>
             <p>{{ t('empathy.stress.desc') }}</p>
+            <p class="empathy-loss">⚠️ {{ t('empathy.stress.loss') }}</p>
           </div>
         </div>
 
@@ -53,6 +55,7 @@
           <div class="empathy-text">
             <h3>{{ t('empathy.time.title') }}</h3>
             <p>{{ t('empathy.time.desc') }}</p>
+            <p class="empathy-loss">⚠️ {{ t('empathy.time.loss') }}</p>
           </div>
         </div>
 
@@ -68,6 +71,7 @@
           <div class="empathy-text">
             <h3>{{ t('empathy.trust.title') }}</h3>
             <p>{{ t('empathy.trust.desc') }}</p>
+            <p class="empathy-loss">⚠️ {{ t('empathy.trust.loss') }}</p>
           </div>
         </div>
       </div>
@@ -108,7 +112,7 @@ useReveal();
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .empathy-card:hover {
@@ -142,6 +146,18 @@ useReveal();
   font-size: var(--text-base);
   color: var(--color-text-secondary);
   line-height: 1.6;
+}
+
+.empathy-loss {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(197, 48, 48, 0.06);
+  border-left: 3px solid var(--color-error);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: var(--text-sm) !important;
+  font-weight: 600;
+  color: var(--color-error) !important;
+  line-height: 1.5;
 }
 
 .empathy-cta {

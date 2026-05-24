@@ -92,7 +92,7 @@ const sidebarItems = computed(() => {
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
   font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
   text-decoration: none;
 }
 

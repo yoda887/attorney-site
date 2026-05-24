@@ -44,7 +44,7 @@ if (import.meta.client) {
   cursor: pointer;
   z-index: 50;
   box-shadow: var(--shadow-md);
-  transition: all var(--transition-base);
+  transition: opacity var(--transition-base), transform var(--transition-base), background-color var(--transition-base);
 }
 
 .back-to-top:hover {
