@@ -3,10 +3,10 @@ const translations: Record<string, Record<string, string>> = {
   uk: {
     // Navigation (updated for new structure)
     'nav.home': 'Головна',
-    'nav.problems': 'Проблеми',
-    'nav.reviews': 'Кейси',
-    'nav.quiz': 'Квіз',
-    'nav.appointment': 'Запис',
+    'nav.problems': 'Ваша ситуація',
+    'nav.reviews': 'Наші кейси',
+    'nav.quiz': 'Оцінити справу',
+    'nav.appointment': 'Записатись',
     'nav.contacts': 'Контакти',
     'nav.login': 'Увійти',
     'nav.dashboard': 'Кабінет',
@@ -214,9 +214,9 @@ const translations: Record<string, Record<string, string>> = {
   },
   en: {
     'nav.home': 'Home',
-    'nav.problems': 'Problems',
-    'nav.reviews': 'Cases',
-    'nav.quiz': 'Quiz',
+    'nav.problems': 'Your Situation',
+    'nav.reviews': 'Our Cases',
+    'nav.quiz': 'Assess Case',
     'nav.appointment': 'Book',
     'nav.contacts': 'Contacts',
     'nav.login': 'Sign In',
