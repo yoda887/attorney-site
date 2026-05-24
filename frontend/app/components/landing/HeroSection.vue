@@ -100,9 +100,9 @@ const specs = [
   'hero.spec6',
 ];
 
-const animatedYears = ref(0);
-const animatedCases = ref(0);
-const animatedClients = ref(0);
+const animatedYears = ref(12);
+const animatedCases = ref(157);
+const animatedClients = ref(342);
 const statsRef = ref<HTMLElement | null>(null);
 const hasAnimated = ref(false);
 
