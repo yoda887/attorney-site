@@ -153,6 +153,10 @@ const translations: Record<string, Record<string, string>> = {
     'contact.schedule.saturday': 'Сб: 10:00 - 14:00',
     'contact.schedule.sunday': 'Нд: Вихідний',
 
+    // Final CTA
+    'final_cta.title': 'Залишилися питання? Оцініть перспективи вашої справи просто зараз',
+    'final_cta.button': 'Пройти тест',
+
     // About (kept for structured data)
     'about.name': 'Меркович Богдан Валерійович',
     'about.description': 'Адвокат з багаторічним досвідом у сфері юридичного захисту. Спеціалізується на складних кримінальних та цивільних справах. Член Національної асоціації адвокатів України.',
@@ -356,6 +360,9 @@ const translations: Record<string, Record<string, string>> = {
     'contact.schedule.weekdays': 'Mon-Fri: 09:00 - 18:00',
     'contact.schedule.saturday': 'Sat: 10:00 - 14:00',
     'contact.schedule.sunday': 'Sun: Closed',
+
+    'final_cta.title': 'Still have questions? Assess your case prospects right now',
+    'final_cta.button': 'Take the test',
 
     'about.name': 'Merkovich Bogdan Valeriyovych',
     'about.description': 'An attorney with many years of experience in legal defense. Specializes in complex criminal and civil cases. Member of the Ukrainian National Bar Association.',

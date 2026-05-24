@@ -6,6 +6,7 @@
     <LegalQuizSection />
     <MultiStepForm />
     <ContactSection />
+    <FinalCtaSection />
     <BackToTop />
   </div>
 </template>
