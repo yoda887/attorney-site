@@ -6,6 +6,7 @@ on:
     branches: 
       - main
       - 'redesign/radical-overhaul'
+      - 'refactor/code-improvements'
 
 jobs:
   deploy:
